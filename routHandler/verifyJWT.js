@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const handler = {};
+// this function will check the user's have userId or not if user Id found then calll next button otherwise it's give some error
 handler.verifyJWT = async (req, res, next) => {
   const token = req.header("authorization");
   if (!token) {
