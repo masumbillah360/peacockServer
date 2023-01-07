@@ -2,6 +2,8 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 const { newsCollection } = require("./newsCollection");
 const router = express.Router();
+
+// to get all newses
 router.get("/", async (req, res) => {
   try {
     const result = await newsCollection.find({}).toArray();
@@ -11,6 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// to get specifiedNews
 router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -24,10 +27,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// to post a news
 router.post("/", async (req, res) => {
   try {
     const data = req.body;
-    console.log(data);
     const result = await newsCollection.insertOne(data);
     res.status(200).send({ data: result });
   } catch (error) {
@@ -35,11 +38,11 @@ router.post("/", async (req, res) => {
   }
 });
 
+// to update a news
 router.put("/:id", async (req, res) => {
   try {
     const body = req.body;
     const id = req.params.id;
-    console.log(body, id);
     const filter = {
       _id: ObjectId(id),
     };
@@ -53,6 +56,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// to delete a news
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
