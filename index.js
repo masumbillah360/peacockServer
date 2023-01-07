@@ -1,6 +1,8 @@
 const express = require("express");
 const newsHandler = require("./routHandler/newsHandler");
+const authHandler = require("./routHandler/authHandler");
 const cors = require("cors");
+const { verifyJWT } = require("./routHandler/verifyJWT");
 const app = express();
 
 // midleware
@@ -17,6 +19,8 @@ config.port = {
 // main function
 const run = async () => {
   try {
+    // authorisation handler
+    app.use("/jwt", authHandler);
     // news handler route
     app.use("/news", newsHandler);
   } catch (error) {

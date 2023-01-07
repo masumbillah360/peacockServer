@@ -1,20 +1,21 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const { newsCollection } = require("./newsCollection");
+const { verifyJWT } = require("./verifyJWT");
 const router = express.Router();
 
 // to get all newses
-router.get("/", async (req, res) => {
+router.get("/", verifyJWT, async (req, res) => {
   try {
     const result = await newsCollection.find({}).toArray();
     res.status(200).send({ data: result });
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    console.log(error);
   }
 });
 
 // to get specifiedNews
-router.get("/:id", async (req, res) => {
+router.get("/:id", verifyJWT, async (req, res) => {
   try {
     const id = req.params.id;
     const query = {
@@ -28,7 +29,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // to post a news
-router.post("/", async (req, res) => {
+router.post("/", verifyJWT, async (req, res) => {
   try {
     const data = req.body;
     const result = await newsCollection.insertOne(data);
@@ -39,7 +40,7 @@ router.post("/", async (req, res) => {
 });
 
 // to update a news
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyJWT, async (req, res) => {
   try {
     const body = req.body;
     const id = req.params.id;
@@ -57,7 +58,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // to delete a news
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyJWT, async (req, res) => {
   try {
     const id = req.params.id;
     const filter = {
